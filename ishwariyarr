@@ -1,0 +1,42 @@
+// Import required modules
+const express = require('express');
+const app = express();
+const port = 3000;
+
+// Middleware to parse JSON requests
+app.use(express.json());
+
+// Endpoint that accepts both GET and POST requests
+app.route('/api/data')
+  .get((req, res) => {
+    // Handle GET request
+    res.send('Hello from GET request!');
+  })
+  .post((req, res) => {
+    // Handle POST request
+    const { userId, collegeEmail, collegeRollNumber, numbers, alphabets } = req.body;
+
+    // Validate request data
+    if (!userId || !collegeEmail || !collegeRollNumber || !numbers || !alphabets) {
+      res.status(400).send({ status: 'Error', message: 'Missing required fields' });
+      return;
+    }
+
+    // Process request data
+    const responseData = {
+      status: 'Success',
+      userId,
+      collegeEmail,
+      collegeRollNumber,
+      numbers,
+      alphabets,
+    };
+
+    // Send response
+    res.send(responseData);
+  });
+
+// Start server
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
+});
